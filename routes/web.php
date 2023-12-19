@@ -30,7 +30,7 @@ Route::group(['prefix' => 'task', 'middleware' => 'auth'], function () {
     Route::get('/', [TaskController::class , 'index'])->name('task.index');
     Route::post('/', [TaskController::class , 'store'])->name('task.store');
     Route::post('/{id}/toggle', [TaskController::class , 'toggle'])->name('task.toggle');
-    Route::put('/{id}', [TaskController::class , 'update'])->name('task.update');
+    Route::put('/{task}', [TaskController::class , 'update'])->name('task.update');
     Route::delete('/{id}', [TaskController::class, 'destroy'])->name('task.destroy');
 });
 

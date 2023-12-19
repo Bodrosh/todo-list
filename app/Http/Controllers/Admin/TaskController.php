@@ -40,11 +40,11 @@ class TaskController extends Controller
         $userTask->save();
     }
 
-    public function update(int $id, UpdateRequest $request)
+    public function update(Task $task, UpdateRequest $request)
     {
         $data = $request->validated();
         $update = Task::where('user_id', auth()->id())
-            ->where('id', $id)
+            ->where('id', $task->id)
             ->update($data);
 
         return $update;
