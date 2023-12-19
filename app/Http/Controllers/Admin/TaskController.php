@@ -5,26 +5,28 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\Task\StoreRequest;
 use App\Http\Requests\Admin\Task\UpdateRequest;
-use App\Http\Resources\Admin\TaskListResource;
 use App\Http\Resources\Admin\TaskResource;
 use App\Models\Task;
 use Inertia\Inertia;
+use App\Services\Task\Service;
+use Inertia\Response;
 
 class TaskController extends Controller
 {
-    public function index()
-    {
-        $userTasks = Task::where('user_id', auth()->id())->latest()->get();
-        $tasks = TaskListResource::collection($userTasks)->resolve();
+    public function __construct(
+        protected Service $service
+    ){}
 
+    public function index(): Response
+    {
+        $tasks = $this->service->getTasks();
         return Inertia::render('Admin/ToDo/Index', compact('tasks'));
     }
 
     public function store(StoreRequest $request)
     {
         $data = $request->validated();
-        $data['user_id'] = auth()->id();
-        $task = Task::create($data);
+        $task = $this->service->store($data);
         return TaskResource::make($task)->resolve();
     }
 
