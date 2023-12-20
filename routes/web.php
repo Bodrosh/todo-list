@@ -24,7 +24,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('main');
 
 Route::group(['prefix' => 'task', 'middleware' => 'auth'], function () {
     Route::get('/', [TaskController::class , 'index'])->name('task.index');
@@ -41,6 +41,10 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__.'/auth.php';
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
